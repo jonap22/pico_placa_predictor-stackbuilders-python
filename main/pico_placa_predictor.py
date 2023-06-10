@@ -2,7 +2,7 @@
 # date: June 9th, 2023
 
 import re
-from datetime import time
+from datetime import datetime, time
 
 
 def load_rules(file_path):
@@ -70,6 +70,13 @@ class PicoPlacaPredictor:
         return False
 
     def is_plate_restricted(self, plate_number, date_str, time_str):
+        """
+        Checks if a car can be on the road.
+        :param plate_number:
+        :param date_str:
+        :param time_str:
+        :return: boolean - True if the car cannot be on the road.
+        """
         if not self.validate_plate_number(plate_number):
             raise ValueError('Invalid plate number format (XXX-1234). ')
 
@@ -79,4 +86,11 @@ class PicoPlacaPredictor:
         if not self.validate_time(time_str):
             raise ValueError('Invalid time format (HH:MM). ')
 
-        return
+        weekday = datetime.strptime(date_str, '%Y-%m-%d').weekday()
+        my_time = datetime.strptime(time_str, '%H:%M').time()
+
+        if weekday in self.rules[plate_number]:
+            if self.is_restricted_time(my_time):
+                return True
+
+        return False
