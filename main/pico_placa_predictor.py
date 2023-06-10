@@ -9,7 +9,7 @@ def load_rules(file_path):
     """
     Loads the Pico&Placa rules from a file.
     :param file_path: the rules file path.
-    :return: rules - a dictionary with the Pico&Placa rules.
+    :return: rules - the Pico&Placa rules.
     """
     rules = {}
 
@@ -31,14 +31,19 @@ def validate_plate_number(plate_number):
     return re.match(plate_number_pattern, plate_number) is not None
 
 
-def validate_date(date):
+def validate_date(date_str):
     """
     Validates the format (YYYY-MM-DD) of the given date.
-    :param date: the given date.
+    :param date_str: the given date.
     :return: boolean - true if the format is valid.
     """
     date_pattern = r'^\d{4}-\d{2}-\d{2}$'
-    return re.match(date_pattern, date) is not None
+    if re.match(date_pattern, date_str):
+        year, month, day = map(int, date_str.split('-'))
+        if 1 <= month <= 12 and 1 <= day <= 31:
+            return True
+
+    return False
 
 
 def validate_time(time_str):
@@ -48,7 +53,11 @@ def validate_time(time_str):
     :return: boolean - true if the format is valid.
     """
     time_pattern = r'^\d{2}:\d{2}$'
-    return re.match(time_pattern, time_str) is not None
+    if re.match(time_pattern, time_str):
+        hours, minutes = map(int, time_str.split(':'))
+        if 0 <= hours <= 23 and 0 <= minutes <= 59:
+            return True
+    return False
 
 
 def is_restricted_time(time_obj):
@@ -79,7 +88,7 @@ class PicoPlacaPredictor:
         :param plate_number:
         :param date_str:
         :param time_str:
-        :return: boolean - True if the car cannot be on the road.
+        :return: boolean - True if the car can NOT be on the road.
         """
         plate_number = plate_number.upper()
 
