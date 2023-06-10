@@ -77,6 +77,8 @@ class PicoPlacaPredictor:
         :param time_str:
         :return: boolean - True if the car cannot be on the road.
         """
+        plate_number = plate_number.upper()
+
         if not self.validate_plate_number(plate_number):
             raise ValueError('Invalid plate number format (XXX-1234). ')
 
