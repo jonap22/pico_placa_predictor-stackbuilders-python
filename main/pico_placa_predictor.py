@@ -2,13 +2,14 @@
 # date: June 9th, 2023
 
 import re
+from datetime import time
 
 
 def load_rules(file_path):
     """
-    Loads the Pico y Placa rules from a file.
+    Loads the Pico&Placa rules from a file.
     :param file_path: the rules file path.
-    :return: rules - a dictionary with the Pico y Placa rules.
+    :return: rules - a dictionary with the Pico&Placa rules.
     """
     rules = {}
 
@@ -53,11 +54,29 @@ class PicoPlacaPredictor:
         return re.match(time_pattern, time_str) is not None
 
     def is_restricted_time(self, time_obj):
-        # TODO: add functionality
-        return
+        """
+        Checks the past rules of the Pico&Placa. (Hours: 7:00 am - 9:30 am / 4:00 pm - 7:30 pm).
+        :param time_obj:
+        :return: boolean - true if the time is within the restricted hours.
+        """
+        morning_start = time(7, 0)
+        morning_end = time(9, 30)
+        evening_start = time(16, 0)
+        evening_end = time(19, 30)
 
-    def is_plate_restricted(self, plate_number, date, time_str):
+        if morning_start <= time_obj <= morning_end or evening_start <= time_obj <= evening_end:
+            return True
+
+        return False
+
+    def is_plate_restricted(self, plate_number, date_str, time_str):
         if not self.validate_plate_number(plate_number):
             raise ValueError('Invalid plate number format (XXX-1234). ')
+
+        if not self.validate_date(date_str):
+            raise ValueError('Invalid date format (YYYY-MM-DD). ')
+
+        if not self.validate_time(time_str):
+            raise ValueError('Invalid time format (HH:MM). ')
 
         return
