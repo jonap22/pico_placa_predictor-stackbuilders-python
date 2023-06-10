@@ -2,14 +2,13 @@
 # date: June 9th, 2023
 
 import re
-from datetime import datetime, time
 
 
 def load_rules(file_path):
     """
     Loads the Pico y Placa rules from a file.
-    :param file_path:
-    :return: rules - a dictionary with the Pico y Placa rules
+    :param file_path: the rules file path.
+    :return: rules - a dictionary with the Pico y Placa rules.
     """
     rules = {}
 
@@ -29,8 +28,8 @@ class PicoPlacaPredictor:
     def validate_plate_number(self, plate_number):
         """
         Validates the format (XXX-1234) of the license plate number.
-        :param plate_number:
-        :return: boolean - true if the format is valid
+        :param plate_number: the given license plate number.
+        :return: boolean - true if the format is valid.
         """
         plate_number_pattern = r'^[A-Z]{3}-\d{4}$'
         return re.match(plate_number_pattern, plate_number) is not None
@@ -38,15 +37,20 @@ class PicoPlacaPredictor:
     def validate_date(self, date):
         """
         Validates the format (YYYY-MM-DD) of the given date.
-        :param date:
-        :return: boolean - true if the format is valid
+        :param date: the given date.
+        :return: boolean - true if the format is valid.
         """
         date_pattern = r'^\d{4}-\d{2}-\d{2}$'
         return re.match(date_pattern, date) is not None
 
     def validate_time(self, time_str):
-        # TODO: add functionality
-        return
+        """
+        Validates the format (HH:MM) of the given time.
+        :param time_str: the given time.
+        :return: boolean - true if the format is valid.
+        """
+        time_pattern = r'^\d{2}:\d{2}$'
+        return re.match(time_pattern, time_str) is not None
 
     def is_restricted_time(self, time_obj):
         # TODO: add functionality
