@@ -8,7 +8,6 @@ from datetime import datetime, time
 def load_rules(file_path):
     """
     Loads the Pico y Placa rules from a file.
-
     :param file_path:
     :return: rules - a dictionary with the Pico y Placa rules
     """
@@ -31,18 +30,19 @@ class PicoPlacaPredictor:
         """
         Validates the format (XXX-1234) of the license plate number.
         :param plate_number:
-        :return: boolean
+        :return: boolean - true if the format is valid
         """
-        pattern = r'^[A-Z]{3}-\d{4}$'
-        return re.match(pattern, plate_number) is not None
-
-    def is_plate_restricted(self, plate_number, date, time_str):
-        # TODO: add functionality
-        return
+        plate_number_pattern = r'^[A-Z]{3}-\d{4}$'
+        return re.match(plate_number_pattern, plate_number) is not None
 
     def validate_date(self, date):
-        # TODO: add functionality
-        return
+        """
+        Validates the format (YYYY-MM-DD) of the given date.
+        :param date:
+        :return: boolean - true if the format is valid
+        """
+        date_pattern = r'^\d{4}-\d{2}-\d{2}$'
+        return re.match(date_pattern, date) is not None
 
     def validate_time(self, time_str):
         # TODO: add functionality
@@ -50,4 +50,10 @@ class PicoPlacaPredictor:
 
     def is_restricted_time(self, time_obj):
         # TODO: add functionality
+        return
+
+    def is_plate_restricted(self, plate_number, date, time_str):
+        if not self.validate_plate_number(plate_number):
+            raise ValueError('Invalid plate number format (XXX-1234). ')
+
         return
